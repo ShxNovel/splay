@@ -14,19 +14,19 @@
     "src",
     "types"
   ],
-  "main": "./dist/splay.umd.cjs",
+  "main": "./dist/splay.cjs",
   "module": "./dist/splay.js",
   "types": "./types/index.d.ts",
   "exports": {
     ".": {
       "types": "./types/index.d.ts",
       "import": "./dist/splay.js",
-      "require": "./dist/splay.umd.cjs"
+      "require": "./dist/splay.cjs"
     },
     "./example": {
       "types": "./types/example/index.d.ts",
       "import": "./dist/example.js",
-      "require": "./dist/example.umd.cjs"
+      "require": "./dist/example.cjs"
     }
   },
   "scripts": {
