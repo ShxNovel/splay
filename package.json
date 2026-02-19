@@ -1,12 +1,17 @@
 {
   "name": "@shxnovel/splay",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "type": "module",
+  "description": "Generic Splay Tree implementation in TypeScript",
+  "keywords": [
+    "splay"
+  ],
   "author": {
     "name": "Aurora-creeper"
   },
   "files": [
     "dist",
+    "src",
     "types"
   ],
   "main": "./dist/splay.umd.cjs",
