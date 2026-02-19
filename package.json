@@ -1,0 +1,41 @@
+{
+  "name": "@shxnovel/splay",
+  "version": "0.0.1",
+  "type": "module",
+  "author": {
+    "name": "Aurora-creeper"
+  },
+  "files": [
+    "dist",
+    "types"
+  ],
+  "main": "./dist/splay.umd.cjs",
+  "module": "./dist/splay.js",
+  "types": "./types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/splay.js",
+      "require": "./dist/splay.umd.cjs"
+    },
+    "./example": {
+      "types": "./types/example/index.d.ts",
+      "import": "./dist/example.js",
+      "require": "./dist/example.umd.cjs"
+    }
+  },
+  "scripts": {
+    "test": "vitest --typecheck",
+    "clean:types": "rimraf types",
+    "build": "pnpm run clean:types && tsc && vite build"
+  },
+  "license": "MIT",
+  "packageManager": "pnpm@10.8.0",
+  "devDependencies": {
+    "@types/node": "^22",
+    "rimraf": "^6.1.2",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1",
+    "vitest": "^4.0.18"
+  }
+}
