@@ -130,4 +130,70 @@ describe('SplayTree', () => {
     expect(tree1.kth(4)?.key).toBe(8);
     expect(tree1.kth(6)?.key).toBe(12);
   });
+
+  it('should handle large-scale operations correctly', () => {
+    const tree = new SplayTree<number, MyNode>(MyNode);
+    const N = 1000;
+    const values: number[] = [];
+
+    // 1. Insert 1000 unique values (deterministic shuffle)
+    for (let i = 0; i < N; i++) values.push(i);
+    // Shuffle
+    for (let i = values.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [values[i], values[j]] = [values[j], values[i]];
+    }
+
+    values.forEach(v => tree.insert(v));
+
+    // 2. Verify size
+    expect((tree.root as any).size).toBe(N);
+
+    // 3. Find each value
+    values.forEach(v => {
+      const found = tree.find(v);
+      expect(found).not.toBeNull();
+      expect(found?.key).toBe(v);
+    });
+
+    // 4. Verify sorted order via kth
+    const sorted = [...values].sort((a, b) => a - b);
+    const uniqueSorted = [...new Set(sorted)];
+    for (let i = 1; i <= uniqueSorted.length; i++) {
+      expect(tree.kth(i)?.key).toBe(uniqueSorted[i - 1]);
+    }
+
+    // 5. Delete half of the values
+    const toDelete = values.slice(0, Math.floor(N / 2));
+    toDelete.forEach(v => {
+      expect(tree.delete(v)).toBe(true);
+    });
+
+    // 6. Verify remaining values
+    const remaining = values.slice(Math.floor(N / 2));
+    const remainingUnique = [...new Set(remaining)].sort((a, b) => a - b);
+    expect((tree.root as any).size).toBe(remainingUnique.length);
+
+    for (let i = 1; i <= remainingUnique.length; i++) {
+      expect(tree.kth(i)?.key).toBe(remainingUnique[i - 1]);
+    }
+
+    // 7. Test rank on remaining values
+    remainingUnique.forEach((v, idx) => {
+      expect(tree.rank(v)).toBe(idx + 1);
+    });
+
+    // 8. Test prev/next
+    for (let i = 0; i < remainingUnique.length; i++) {
+      const prev = tree.prev(remainingUnique[i] + 1);
+      expect(prev?.key).toBe(remainingUnique[i]);
+
+      const next = tree.next(remainingUnique[i] - 1);
+      expect(next?.key).toBe(remainingUnique[i]);
+    }
+
+    // 9. Clear tree
+    remainingUnique.forEach(v => tree.delete(v));
+    expect(tree.root).toBeNull();
+  });
 });
